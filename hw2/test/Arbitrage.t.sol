@@ -79,8 +79,16 @@ contract Arbitrage is Test {
         /**
          * Please add your solution below
          */
+        Token[5] memory tokens = [tokenB, tokenA, tokenD, tokenC, tokenB];
+        address[] memory path = new address[](2);
+        for (uint256 i = 0; i < 4; i++) {
+            path[0] = address(tokens[i]);
+            path[1] = address(tokens[i + 1]);
+            tokens[i].approve(address(router), tokens[i].balanceOf(arbitrager));
+            router.swapExactTokensForTokens(tokens[i].balanceOf(arbitrager), 0, path, arbitrager, block.timestamp);
+        }
         /**
-         * Please add your solution above
+         * Please add your solution above   
          */
         uint256 tokensAfter = tokenB.balanceOf(arbitrager);
         assertGt(tokensAfter, 20 ether);
